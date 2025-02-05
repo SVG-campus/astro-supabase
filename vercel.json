@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "render": {
+        "runtime": "nodejs20.x"
+      }
+    }
+  }
+  
