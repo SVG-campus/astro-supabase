@@ -2,62 +2,67 @@
 interface Props {
   title: string;
 }
-
-const description = "Astro and Supabase demo app";
 const { title } = Astro.props;
-const ogImageURL = new URL("hero.png", Astro.site).href;
-const canonicalURL = new URL(Astro.url).href;
+const userEmail = Astro.locals?.email; // Assuming Astro.locals.email is set when logged in
 ---
-
 <html lang="en" class="h-full w-full">
   <head>
     <title>{title}</title>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <meta property="twitter:image" content={ogImageURL} />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="og:image" content={ogImageURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalURL} />
+    <meta name="description" content="Astro and Supabase demo app" />
   </head>
-  <body
-    class="flex flex-col h-full w-full dark:bg-zinc-900 bg-zinc-50 dark:text-zinc-100"
-  >
+  <body class="flex flex-col h-full w-full dark:bg-zinc-900 bg-zinc-50 dark:text-zinc-100">
     <nav class="border-b bg-white dark:bg-zinc-800 dark:border-zinc-700">
-      <div
-        class="flex items-baseline justify-end sm:justify-between p-4 max-w-screen-xl mx-auto"
-      >
-        <a href="/" class="hidden sm:block font-semibold dark:text-white"
-          >Astro</a
-        >
-        <div>
-          <ul class="font-medium flex items-baseline gap-8">
-            <li>
-              <a
-                href="/dashboard"
-                class="block text-zinc-900 dark:text-gray-200">Dashboard</a
-              >
-            </li>
-            <li>
-              <a href="/register" class="block text-zinc-900 dark:text-gray-200"
-                >Register</a
-              >
-            </li>
-            <li>
-              <a href="/signin" class="block text-zinc-900 dark:text-gray-200"
-                >Sign in</a
-              >
-            </li>
-          </ul>
+      <div class="flex items-center justify-between p-4 max-w-screen-xl mx-auto">
+        <!-- Left-side navigation links -->
+        <div class="flex items-center gap-4">
+          <a href="/" class="font-semibold dark:text-white">Astro</a>
+          <a href="/dashboard" class="text-zinc-900 dark:text-gray-200">Dashboard</a>
+          <a href="/store" class="text-zinc-900 dark:text-gray-200">Store</a>
+          <a href="/library" class="text-zinc-900 dark:text-gray-200">Library</a>
+          {userEmail && (
+            <a href="/profile" class="text-zinc-900 dark:text-gray-200">Profile</a>
+          )}
+        </div>
+        <!-- Right-side account dropdown -->
+        <div class="relative">
+          <button id="userDropdownButton" class="flex items-center gap-2 focus:outline-none">
+            {userEmail ? <span>{userEmail}</span> : <span>Account</span>}
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="userDropdownMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg hidden">
+            {userEmail ? (
+              <>
+                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700">Profile</a>
+                <a href="/api/auth/signout" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700">Sign Out</a>
+              </>
+            ) : (
+              <>
+                <a href="/signin" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700">Sign In</a>
+                <a href="/register" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700">Register</a>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>
     <slot />
+    <script>
+      const dropdownButton = document.getElementById('userDropdownButton');
+      const dropdownMenu = document.getElementById('userDropdownMenu');
+      dropdownButton.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('hidden');
+      });
+      // Hide dropdown on outside click
+      document.addEventListener('click', (e) => {
+        if (!dropdownButton.contains(e.target)) {
+          dropdownMenu.classList.add('hidden');
+        }
+      });
+    </script>
   </body>
 </html>

@@ -1,0 +1,26 @@
+---
+import Base from "../layout/Base.astro";
+const title = "Library";
+---
+<Base title={title}>
+  <section class="py-12 px-4 w-full flex flex-col gap-8 items-center">
+    <h2 class="text-2xl font-bold">Library</h2>
+    <p class="text-lg dark:text-zinc-100">Download your purchased files below.</p>
+    <div class="w-full max-w-3xl grid grid-cols-1 gap-4">
+      <div class="border p-4 rounded-md flex items-center justify-between">
+        <div>
+          <h3 class="font-semibold">File A</h3>
+          <p class="text-sm">Description for file A</p>
+        </div>
+        <a href="https://your-supabase-s3-url/file-a.pdf" class="bg-green-600 text-white px-4 py-2 rounded-md">Download</a>
+      </div>
+      <div class="border p-4 rounded-md flex items-center justify-between">
+        <div>
+          <h3 class="font-semibold">File B</h3>
+          <p class="text-sm">Description for file B</p>
+        </div>
+        <a href="https://your-supabase-s3-url/file-b.pdf" class="bg-green-600 text-white px-4 py-2 rounded-md">Download</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,22 @@
+---
+import Base from "../layout/Base.astro";
+const title = "Store";
+---
+<Base title={title}>
+  <section class="py-12 px-4 w-full flex flex-col gap-8 items-center">
+    <h2 class="text-2xl font-bold">Store</h2>
+    <p class="text-lg dark:text-zinc-100">Purchase access to premium files.</p>
+    <div class="w-full max-w-3xl grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="border p-4 rounded-md">
+        <h3 class="font-semibold">File Package A</h3>
+        <p class="text-sm">Access to files A, B, C</p>
+        <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">Buy Now</button>
+      </div>
+      <div class="border p-4 rounded-md">
+        <h3 class="font-semibold">File Package B</h3>
+        <p class="text-sm">Access to files D, E, F</p>
+        <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md">Buy Now</button>
+      </div>
+    </div>
+  </section>
+</Base>

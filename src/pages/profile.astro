@@ -1,0 +1,50 @@
+---
+import Base from "../layout/Base.astro";
+import { supabase } from "../lib/supabase";
+const { email } = Astro.locals;
+---
+<Base title="Profile">
+  <section class="py-12 px-4 w-full flex flex-col gap-8 items-center">
+    <h2 class="text-2xl font-bold">Your Profile</h2>
+    <p class="text-lg dark:text-zinc-100">Email: {email}</p>
+    <!-- Form to update user profile -->
+    <form action="/api/auth/update-profile" method="post" class="w-full max-w-md grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-2">
+        <label for="email-update" class="font-medium text-sm">Email</label>
+        <input id="email-update" name="email" type="email" value={email} class="rounded-md py-1 px-3 border" />
+      </div>
+      <div class="grid grid-cols-1 gap-2">
+        <label for="phone-update" class="font-medium text-sm">Phone Number</label>
+        <input id="phone-update" name="phone" type="tel" placeholder="+1234567890" class="rounded-md py-1 px-3 border" />
+      </div>
+      <div class="grid grid-cols-1 gap-2">
+        <label for="password-update" class="font-medium text-sm">New Password</label>
+        <input id="password-update" name="password" type="password" placeholder="New password" class="rounded-md py-1 px-3 border" />
+      </div>
+      <div class="grid grid-cols-1 gap-2">
+        <label for="github-connect" class="font-medium text-sm">Connect GitHub</label>
+        <button id="githubConnectBtn" type="button" class="bg-gray-200 px-3 py-1 rounded-md">Connect GitHub</button>
+      </div>
+      <button type="submit" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md">Update Profile</button>
+    </form>
+  </section>
+  <script type="module">
+    import { supabase } from '../lib/supabase.js';
+    const githubConnectBtn = document.getElementById('githubConnectBtn');
+    githubConnectBtn.addEventListener('click', async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: import.meta.env.DEV
+            ? "http://localhost:4321/api/auth/callback"
+            : "https://cbb.homes/api/auth/callback"
+        }
+      });
+      if (error) {
+        console.error("GitHub OAuth error:", error);
+      } else if (data?.url) {
+        window.location.href = data.url;
+      }
+    });
+  </script>
+</Base>
