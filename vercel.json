@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/render": {
+      "**/*.func": {
         "runtime": "nodejs18.x@1.0.0"
       }
     }
